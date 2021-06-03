@@ -1,4 +1,4 @@
-package com.lenatopoleva.gb_testing
+package com.lenatopoleva.gb_testing.ui
 
 import android.text.Editable
 import android.text.TextWatcher

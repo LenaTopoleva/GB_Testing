@@ -1,5 +1,6 @@
 package com.lenatopoleva.gb_testing
 
+import com.lenatopoleva.gb_testing.ui.EmailValidator
 import org.junit.Assert
 import org.junit.Test
 
@@ -16,7 +17,7 @@ class EmailValidatorTest {
     }
 
     @Test
-    fun emailValidator_InvalidEmailNoTld_ReturnsFalse() {
+    fun emailValidator_InvalidEmailNoPointAndTld_ReturnsFalse() {
         Assert.assertFalse(EmailValidator.isValidEmail("name@email"))
     }
 
@@ -38,5 +39,20 @@ class EmailValidatorTest {
     @Test
     fun emailValidator_NullEmail_ReturnsFalse() {
         Assert.assertFalse(EmailValidator.isValidEmail(null))
+    }
+
+    @Test
+    fun emailValidator_InvalidEmailNoDomainName_ReturnsFalse(){
+        Assert.assertFalse(EmailValidator.isValidEmail("name@"))
+    }
+
+    @Test
+    fun emailValidator_InvalidEmailNoAtSign_ReturnsFalse(){
+        Assert.assertFalse(EmailValidator.isValidEmail("nameemail.com"))
+    }
+
+    @Test
+    fun emailValidator_InvalidEmailNoTld_ReturnsFalse(){
+        Assert.assertFalse(EmailValidator.isValidEmail("name@email."))
     }
 }
