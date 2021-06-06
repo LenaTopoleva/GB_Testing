@@ -7,21 +7,20 @@ import java.util.regex.Pattern
 
 class MainPresenter(): MvpPresenter<MainView>() {
 
-    companion object{
+    companion object {
         const val NAME_PATTERN = "^([a-zA-Z]+?)([-\\s'][a-zA-Z]+)*?\$"
 
     }
 
-    private var user: User? = null
+    var user: User? = null
 
-    fun saveButtonClicked(emailIsValid: Boolean, email: String?, repeatEmail: String?, name: String?): User? {
+    fun saveButtonClicked(emailIsValid: Boolean, email: String?, repeatEmail: String?, name: String?) {
         if (emailIsValid) {
-            if (emailsAreEqual(email, repeatEmail)) {
-                if (isNameValid(name)) {
+            if (email == repeatEmail) {
+                if (nameIsValid(name)) {
                     viewState.viewOk()
-                    user = User(makeFirstLetterOfNameUppercase(name!!), email!!)
+                    user = User(name!!, email!!)
                     registrateUser(user);
-                    return user
                 }
                 else viewState.viewInvalidName()
             }
@@ -29,25 +28,15 @@ class MainPresenter(): MvpPresenter<MainView>() {
         } else {
             viewState.viewInvalidEmail()
         }
-        return user
     }
 
-    fun emailsAreEqual(email: String?, repeatEmail: String?): Boolean{
-        return email == repeatEmail
-    }
-
-    fun isNameValid (name: String?): Boolean {
+    private fun nameIsValid (name: String?): Boolean {
         val pattern = Pattern.compile(NAME_PATTERN)
         return name != null && pattern.matcher(name).matches()
     }
 
-    fun makeFirstLetterOfNameUppercase(name: String): String {
-        return name[0].toUpperCase() + name.substring(1)
-    }
-
-    fun registrateUser(user: User?): User? {
+    private fun registrateUser(user: User?) {
         user?.isRegistrated = true;
-        return user
     }
 
 }
