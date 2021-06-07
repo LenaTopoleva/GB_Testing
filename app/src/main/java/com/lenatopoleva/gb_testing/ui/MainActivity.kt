@@ -5,6 +5,7 @@ import android.widget.EditText
 import android.widget.Toast
 import com.lenatopoleva.gb_testing.R
 import com.lenatopoleva.gb_testing.databinding.ActivityMainBinding
+import com.lenatopoleva.gb_testing.mvp.model.User
 import com.lenatopoleva.gb_testing.mvp.presenter.MainPresenter
 import com.lenatopoleva.gb_testing.mvp.view.MainView
 import moxy.MvpAppCompatActivity
@@ -38,8 +39,8 @@ class MainActivity : MvpAppCompatActivity(), MainView {
         Toast.makeText(this@MainActivity, errorMessage, Toast.LENGTH_SHORT).show()
     }
 
-    override fun viewOk() {
-        Toast.makeText(this@MainActivity, getString(R.string.valid_email), Toast.LENGTH_SHORT).show()
+    override fun viewOk(user: User?) {
+        Toast.makeText(this@MainActivity, getString(R.string.hello) + ", ${user?.name}!", Toast.LENGTH_SHORT).show()
     }
 
     override fun viewEmailsNotEqual() {

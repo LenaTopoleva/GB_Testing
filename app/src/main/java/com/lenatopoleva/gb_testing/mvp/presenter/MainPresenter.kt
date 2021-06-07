@@ -18,9 +18,9 @@ class MainPresenter(): MvpPresenter<MainView>() {
         if (emailIsValid) {
             if (email == repeatEmail) {
                 if (nameIsValid(name)) {
-                    viewState.viewOk()
                     user = User(name!!, email!!)
                     registrateUser(user);
+                    viewState.viewOk(user)
                 }
                 else viewState.viewInvalidName()
             }

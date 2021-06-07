@@ -45,7 +45,7 @@ class MainPresenterTest {
     @Test
     fun saveButtonClicked_AllOk(){
         presenter.saveButtonClicked(true, "vasya@vasya.ru", "vasya@vasya.ru", "Vasya")
-        verify(mainViewState, times(1)).viewOk()
+        verify(mainViewState, times(1)).viewOk(presenter.user)
     }
 
     @Test
