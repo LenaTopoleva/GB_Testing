@@ -1,5 +1,6 @@
 package com.lenatopoleva.gb_testing.mvp.presenter
 
+import com.lenatopoleva.gb_testing.mvp.view.MainView
 import com.lenatopoleva.gb_testing.mvp.view.`MainView$$State`
 import com.nhaarman.mockito_kotlin.times
 import com.nhaarman.mockito_kotlin.verify
@@ -15,13 +16,13 @@ class MainPresenterTest {
     private lateinit var presenter: MainPresenter
 
     @Mock
-    lateinit var mainViewState: `MainView$$State`
+    lateinit var mainViewState: MainView
 
     @Before
       fun setup() {
         MockitoAnnotations.initMocks(this)
         presenter = MainPresenter()
-        presenter.setViewState(mainViewState)
+        presenter.attachView(mainViewState)
       }
 
     @Test
