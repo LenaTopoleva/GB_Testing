@@ -1,64 +1,65 @@
 package com.lenatopoleva.gb_testing.mvp.presenter
 
-import com.lenatopoleva.gb_testing.mvp.model.User
+import com.lenatopoleva.gb_testing.mvp.view.MainView
+import com.lenatopoleva.gb_testing.mvp.view.`MainView$$State`
+import com.nhaarman.mockito_kotlin.times
+import com.nhaarman.mockito_kotlin.verify
 import org.junit.Assert
+import org.junit.Before
 import org.junit.Test
+import org.mockito.Mock
+import org.mockito.MockitoAnnotations
+
 
 class MainPresenterTest {
 
+    private lateinit var presenter: MainPresenter
+
+    @Mock
+    lateinit var mainViewState: MainView
+
+    @Before
+      fun setup() {
+        MockitoAnnotations.initMocks(this)
+        presenter = MainPresenter()
+        presenter.attachView(mainViewState)
+      }
+
     @Test
-    fun emailsAreEqualMethod_equalEmails_ReturnsTrue() {
-        Assert.assertEquals(true, MainPresenter().emailsAreEqual("vasya@email.ru", "vasya@email.ru") )
+    fun saveButtonClicked_EmailIsInvalid(){
+      presenter.saveButtonClicked(false, "vasya@vasyaru", "vasya@vasya.ru", "Vasya")
+      verify(mainViewState, times(1)).viewInvalidEmail()
     }
 
     @Test
-    fun emailsAreEqualMethod_notEqualEmails_ReturnsFalse() {
-        Assert.assertNotEquals(true, MainPresenter().emailsAreEqual("vasya@email.ru", "petya@email.ru") )
+    fun saveButtonClicked_EmailsNotEqual(){
+        presenter.saveButtonClicked(true, "vasya@vasya.ru", "vasya@vasya.com", "Vasya")
+        verify(mainViewState, times(1)).viewEmailsNotEqual()
     }
 
     @Test
-    fun isNameValid_emptyName_returnsFalse(){
-        Assert.assertFalse(MainPresenter().isNameValid(""))
+    fun saveButtonClicked_InvalidName(){
+        presenter.saveButtonClicked(true, "vasya@vasya.ru", "vasya@vasya.ru", "V1asya")
+        verify(mainViewState, times(1)).viewInvalidName()
     }
 
     @Test
-    fun isNameValid_nameStartsWithDigit_returnsFalse(){
-        Assert.assertFalse(MainPresenter().isNameValid("1asya"))
+    fun saveButtonClicked_AllOk(){
+        presenter.saveButtonClicked(true, "vasya@vasya.ru", "vasya@vasya.ru", "Vasya")
+        verify(mainViewState, times(1)).viewOk(presenter.user)
     }
 
     @Test
-    fun isNameValid_nameContainsDigit_returnsFalse(){
-        Assert.assertFalse(MainPresenter().isNameValid("vas1ya"))
+    fun saveButtonClicked_AllOk_UserNotNull(){
+        presenter.saveButtonClicked(true, "vasya@vasya.ru", "vasya@vasya.ru", "Vasya")
+        Assert.assertNotNull(presenter.user)
     }
 
     @Test
-    fun saveButtonClicked_emailNotValid_returnsNull() {
-        Assert.assertNull(MainPresenter().saveButtonClicked(false, "vasya@email.ru", "vasya@email.ru", "Vasya"))
+    fun saveButtonClicked_AllOk_UserIsRegistated(){
+        presenter.saveButtonClicked(true, "vasya@vasya.ru", "vasya@vasya.ru", "Vasya")
+        Assert.assertNotNull(presenter.user)
+        Assert.assertTrue(presenter.user!!.isRegistrated)
     }
 
-    @Test
-    fun saveButtonClicked_emailsNotEqual_returnsNull() {
-        Assert.assertNull(MainPresenter().saveButtonClicked(true, "vasya@email.ru", "vasy@email.ru", "Vasya"))
-    }
-
-    @Test
-    fun saveButtonClicked_nameNotValid_returnsNull() {
-        Assert.assertNull(MainPresenter().saveButtonClicked(true, "vasya@email.ru", "vasya@email.ru", "1asya"))
-    }
-
-    @Test
-    fun saveButtonClicked_allOk_returnsNotNull() {
-        Assert.assertNotNull(MainPresenter().saveButtonClicked(true, "vasya@email.ru", "vasya@email.ru", "Vasya"))
-    }
-
-    @Test
-    fun makeFirstLetterOfNameUppercase_returnsNameWithUppercaseFirstLetter() {
-        Assert.assertEquals("Vasya", MainPresenter().makeFirstLetterOfNameUppercase("vasya"))
-    }
-
-    @Test
-    fun registrateUser_returnsSameObject(){
-        val user = User("vasya", "vasya@vasya.ru")
-        Assert.assertSame(user, MainPresenter().registrateUser(user) )
-    }
 }
